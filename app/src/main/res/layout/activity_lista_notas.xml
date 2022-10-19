@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ListaNotasActivity">
+    tools:context=".ui.adapter.ListaNotasActivity">
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/listaNotas_listView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/lista_notas_insere_nota"
+        app:layout_constraintBottom_toTopOf="@id/listaNotas_InsereNotas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/activity_item_nota" />
 
-    <View android:id="@+id/lista_notas_fundo_gradiente_inferior"
+    <View android:id="@+id/listaNotas_separador"
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:background="@drawable/fundo_gradiente_insere_nota"
-        app:layout_constraintBottom_toTopOf="@id/lista_notas_insere_nota"
+        app:layout_constraintBottom_toTopOf="@id/listaNotas_InsereNotas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/lista_notas_insere_nota"
+        android:id="@+id/listaNotas_InsereNotas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
