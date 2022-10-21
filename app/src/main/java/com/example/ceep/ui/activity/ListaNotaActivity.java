@@ -16,15 +16,15 @@ import java.util.List;
 
 public class ListaNotaActivity extends AppCompatActivity {
 
+    private ListaNotasAdapter adapter;
+    private List<Nota> todasNotas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
-
-        List<Nota> todasNotas = configuraNotas();
+        todasNotas = configuraNotas();
         configuraRecyclerView(todasNotas);
-
-
 
         TextView insereNota = findViewById(R.id.listaNotas_InsereNotas);
         insereNota.setOnClickListener(new View.OnClickListener() {
@@ -40,8 +40,9 @@ public class ListaNotaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         NotaDAO notaDao = new NotaDAO();
-        List<Nota> todasNotas = notaDao.todos();
-        configuraRecyclerView(todasNotas);
+        todasNotas.clear();
+        todasNotas.addAll(notaDao.todos());
+        adapter.notifyDataSetChanged();
         super.onResume();
     }
 
@@ -59,6 +60,7 @@ public class ListaNotaActivity extends AppCompatActivity {
     }
 
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaNotas) {
-        listaNotas.setAdapter(new ListaNotasAdapter(this, todasNotas));
+        adapter = new ListaNotasAdapter(this, todasNotas);
+        listaNotas.setAdapter(adapter);
     }
 }
