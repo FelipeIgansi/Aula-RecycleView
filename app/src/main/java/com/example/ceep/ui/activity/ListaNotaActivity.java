@@ -1,8 +1,11 @@
 package com.example.ceep.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ceep.R;
 import com.example.ceep.dao.NotaDAO;
@@ -21,18 +24,33 @@ public class ListaNotaActivity extends AppCompatActivity {
         List<Nota> todasNotas = configuraNotas();
         configuraRecyclerView(todasNotas);
 
+
+
+        TextView insereNota = findViewById(R.id.listaNotas_InsereNotas);
+        insereNota.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iniciaFormNota = new Intent(ListaNotaActivity.this, FormNotaActivity.class);
+                startActivity(iniciaFormNota);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        NotaDAO notaDao = new NotaDAO();
+        List<Nota> todasNotas = notaDao.todos();
+        configuraRecyclerView(todasNotas);
+        super.onResume();
     }
 
     private List<Nota> configuraNotas() {
         NotaDAO notaDao = new NotaDAO();
-//        for (int i = 0; i < 10000; i++) {
-//            notaDao.insere(new Nota("Titulo " + i ,
-//                                "Descrição "+i));
-//        }
+
         notaDao.insere(new Nota("Primeira Nota", "Descrição pequena "),
                 new Nota("Segunda Nota", "Segunda descrição é bem maior que a da primeira nota"));
-        List<Nota> todasNotas = notaDao.todos();
-        return todasNotas;
+        return notaDao.todos();
     }
 
     private void configuraRecyclerView(List<Nota> todasNotas) {
