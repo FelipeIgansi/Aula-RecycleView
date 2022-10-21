@@ -3,10 +3,12 @@ package com.example.ceep.ui.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ceep.R;
@@ -30,10 +32,13 @@ public class FormNotaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_form_nota_ic_salva){
-            TextView titulo = findViewById(R.id.formNota_EditTxt_Titulo);
-            TextView descricao = findViewById(R.id.formNota_EditTxt_Descricao);
+            EditText titulo = findViewById(R.id.formNota_EditTxt_Titulo);
+            EditText descricao = findViewById(R.id.formNota_EditTxt_Descricao);
             Nota notaCriada = new Nota(pegaTexto(titulo), pegaTexto(descricao));
             new NotaDAO().insere(notaCriada);
+            Intent resultadoInsercao = new Intent();
+            resultadoInsercao.putExtra("nota", notaCriada);
+            setResult(2,resultadoInsercao);
             finish();
         }
         return super.onOptionsItemSelected(item);
