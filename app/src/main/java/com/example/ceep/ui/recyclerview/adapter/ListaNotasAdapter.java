@@ -14,21 +14,20 @@ import java.util.List;
 
 public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.NotaViewHolder> {
 
+    // Declaração das variaveis globais
+    // Context é o contexto da classe é a referencia para ela
     private final Context context;
     private final List<Nota> notas;
-    private int qtnViewHolder = 0;
 
 
-    public ListaNotasAdapter(Context context, List<Nota> notas ) {
+    public ListaNotasAdapter(Context context, List<Nota> notas) {
         this.context = context;
         this.notas = notas;
     }
 
     @Override
     public ListaNotasAdapter.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        qtnViewHolder++;
         View viewCriada = criaView(parent);
-        Log.i("recyclerView Adapter", "quantidade view holder: "+qtnViewHolder);
         return new NotaViewHolder(viewCriada);
     }
 
@@ -48,10 +47,11 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         return notas.size();
     }
 
-    class NotaViewHolder extends  RecyclerView.ViewHolder{
+    class NotaViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titulo;
         private final TextView descricao;
+
         public NotaViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.itemNota_titulo);
@@ -59,7 +59,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             descricao = itemView.findViewById(R.id.itemNota_descricao);
         }
 
-        public void Vincula(Nota nota){
+        public void Vincula(Nota nota) {
             preencheCampos(nota);
         }
 
@@ -68,7 +68,8 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             descricao.setText((nota.getDescricao()));
         }
     }
-    public void adiciona(Nota nota){
+
+    public void adiciona(Nota nota) {
         notas.add(nota);
         notifyDataSetChanged();
     }

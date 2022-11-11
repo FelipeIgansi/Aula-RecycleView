@@ -1,21 +1,21 @@
 package com.example.ceep.ui.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import static com.example.ceep.ui.activity.ConstantesCompartilhadas.CHAVE_NOTA;
+import static com.example.ceep.ui.activity.ConstantesCompartilhadas.CODIGO_RESULTADO_NOTA_CIRADA;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.ceep.R;
 import com.example.ceep.dao.NotaDAO;
 import com.example.ceep.model.Nota;
 
 public class FormNotaActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +31,35 @@ public class FormNotaActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_form_nota_ic_salva){
-            EditText titulo = findViewById(R.id.formNota_EditTxt_Titulo);
-            EditText descricao = findViewById(R.id.formNota_EditTxt_Descricao);
-            Nota notaCriada = new Nota(pegaTexto(titulo), pegaTexto(descricao));
-            new NotaDAO().insere(notaCriada);
-            Intent resultadoInsercao = new Intent();
-            resultadoInsercao.putExtra("nota", notaCriada);
-            setResult(2,resultadoInsercao);
+        if (validacaoIdBotaoSalvamento(item)) {
+            Nota notaCriada = criaNota();
+            retornaNota(notaCriada);
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
-    public String pegaTexto(@NonNull TextView valor){
+
+    private void retornaNota(Nota nota) {
+        new NotaDAO().insere(nota);
+        Intent resultadoInsercao = new Intent();
+        resultadoInsercao.putExtra(CHAVE_NOTA, nota);
+        setResult(CODIGO_RESULTADO_NOTA_CIRADA, resultadoInsercao);
+    }
+
+    @NonNull
+    private Nota criaNota() {
+        EditText titulo = findViewById(R.id.formNota_EditTxt_Titulo);
+        EditText descricao = findViewById(R.id.formNota_EditTxt_Descricao);
+        Nota notaCriada = new Nota(pegaTexto(titulo), pegaTexto(descricao));
+        return notaCriada;
+    }
+
+    private boolean validacaoIdBotaoSalvamento(@NonNull MenuItem item) {
+
+        return item.getItemId() == R.id.menu_form_nota_ic_salva;
+    }
+
+    public String pegaTexto(@NonNull TextView valor) {
         return valor.getText().toString();
     }
 }
