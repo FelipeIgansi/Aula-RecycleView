@@ -57,11 +57,17 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         return notas.size();
     }
 
+    public void altera(int id, Nota nota) {
+        notas.set(id, nota) ;
+        notifyDataSetChanged();
+    }
+
     class NotaViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titulo;
         private final TextView descricao;
         private Nota nota;
+
 
         public NotaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +77,8 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemClickListener.onItemClick(nota);
+                    //noinspection deprecation
+                    onItemClickListener.onItemClick(nota, getAdapterPosition());
                 }
             });
         }

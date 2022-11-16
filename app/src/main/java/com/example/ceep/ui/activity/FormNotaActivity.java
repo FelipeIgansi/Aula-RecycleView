@@ -19,14 +19,20 @@ import java.io.Serializable;
 public class FormNotaActivity extends AppCompatActivity {
 
 
+    private int posicaoRecebida;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_nota);
 
         Intent dadosRecebidos = getIntent();
-        if (dadosRecebidos.hasExtra(CHAVE_NOTA)) {
+        if (dadosRecebidos.hasExtra(CHAVE_NOTA) && dadosRecebidos.hasExtra("posicao")) {
             Nota notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
+
+            posicaoRecebida = dadosRecebidos.getIntExtra("posicao", -1);
+            // -1 é colocado, pois esse valor é invalido e se for recebido esse valor dará erro
+
             TextView titulo = findViewById(R.id.formNota_EditTxt_Titulo);
             titulo.setText(notaRecebida.getTitulo());
             TextView descricao = findViewById(R.id.formNota_EditTxt_Descricao);
@@ -54,6 +60,7 @@ public class FormNotaActivity extends AppCompatActivity {
         new NotaDAO().insere(nota);
         Intent resultadoInsercao = new Intent();
         resultadoInsercao.putExtra(CHAVE_NOTA, nota);
+        resultadoInsercao.putExtra("posicao", posicaoRecebida);
         setResult(CODIGO_RESULTADO_NOTA_CIRADA, resultadoInsercao);
     }
 

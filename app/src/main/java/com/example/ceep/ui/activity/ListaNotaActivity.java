@@ -68,9 +68,14 @@ public class ListaNotaActivity extends AppCompatActivity {
             adicionaNota(notaRecebida);
 
         }
-        if (requestCode == 2 && resultCode == CODIGO_RESULTADO_NOTA_CIRADA && temNota(data)) {
+        if (requestCode == 2 &&
+                resultCode == CODIGO_RESULTADO_NOTA_CIRADA &&
+                temNota(data) &&
+                data.hasExtra("posicao")) {
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            Toast.makeText(this, notaRecebida.getTitulo(), Toast.LENGTH_SHORT).show();
+            int posicaoRecebida = data.getIntExtra("posicao",-1);
+            new NotaDAO().altera(posicaoRecebida, notaRecebida);
+            adapter.altera(posicaoRecebida, notaRecebida);
         }
     }
 
@@ -108,11 +113,12 @@ public class ListaNotaActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(Nota nota) {
+            public void onItemClick(Nota nota, int posicao) {
                 Intent abreFormularioEditaNota =
                         new Intent(ListaNotaActivity.this,
                                 FormNotaActivity.class);
                 abreFormularioEditaNota.putExtra(CHAVE_NOTA, nota);
+                abreFormularioEditaNota.putExtra("posicao", posicao);
                 //noinspection deprecation
                 startActivityForResult(abreFormularioEditaNota, 2);
             }
