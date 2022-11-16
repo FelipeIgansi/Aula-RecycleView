@@ -14,30 +14,41 @@ import com.example.ceep.R;
 import com.example.ceep.dao.NotaDAO;
 import com.example.ceep.model.Nota;
 
-import java.io.Serializable;
-
 public class FormNotaActivity extends AppCompatActivity {
-
-
-    private int posicaoRecebida;
+    public static final int POSICAO_INVALIDA = -1;
+    public static final String CHAVE_POSICAO = "posicao";
+    private int posicaoRecebida = POSICAO_INVALIDA;
+    private TextView titulo;
+    private TextView descricao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_nota);
 
+        inicializaCampos();
+
         Intent dadosRecebidos = getIntent();
-        if (dadosRecebidos.hasExtra(CHAVE_NOTA) && dadosRecebidos.hasExtra("posicao")) {
+        if (dadosRecebidos.hasExtra(CHAVE_NOTA)) {
             Nota notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
 
-            posicaoRecebida = dadosRecebidos.getIntExtra("posicao", -1);
+            posicaoRecebida = dadosRecebidos.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
             // -1 é colocado, pois esse valor é invalido e se for recebido esse valor dará erro
 
-            TextView titulo = findViewById(R.id.formNota_EditTxt_Titulo);
-            titulo.setText(notaRecebida.getTitulo());
-            TextView descricao = findViewById(R.id.formNota_EditTxt_Descricao);
-            descricao.setText(notaRecebida.getDescricao());
+            preencheCampos(notaRecebida);
         }
+    }
+
+
+
+    private void preencheCampos(Nota notaRecebida) {
+        titulo.setText(notaRecebida.getTitulo());
+        descricao.setText(notaRecebida.getDescricao());
+    }
+
+    private void inicializaCampos() {
+        titulo = findViewById(R.id.formNota_EditTxt_Titulo);
+        descricao = findViewById(R.id.formNota_EditTxt_Descricao);
     }
 
     @Override
@@ -60,16 +71,13 @@ public class FormNotaActivity extends AppCompatActivity {
         new NotaDAO().insere(nota);
         Intent resultadoInsercao = new Intent();
         resultadoInsercao.putExtra(CHAVE_NOTA, nota);
-        resultadoInsercao.putExtra("posicao", posicaoRecebida);
+        resultadoInsercao.putExtra(CHAVE_POSICAO, posicaoRecebida);
         setResult(CODIGO_RESULTADO_NOTA_CIRADA, resultadoInsercao);
     }
 
     @NonNull
     private Nota criaNota() {
-        EditText titulo = findViewById(R.id.formNota_EditTxt_Titulo);
-        EditText descricao = findViewById(R.id.formNota_EditTxt_Descricao);
-        Nota notaCriada = new Nota(pegaTexto(titulo), pegaTexto(descricao));
-        return notaCriada;
+        return new Nota(pegaTexto(titulo), pegaTexto(descricao));
     }
 
     private boolean validacaoIdBotaoSalvamento(@NonNull MenuItem item) {
