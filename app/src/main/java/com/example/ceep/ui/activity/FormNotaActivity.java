@@ -14,6 +14,8 @@ import com.example.ceep.R;
 import com.example.ceep.dao.NotaDAO;
 import com.example.ceep.model.Nota;
 
+import java.io.Serializable;
+
 public class FormNotaActivity extends AppCompatActivity {
 
 
@@ -21,6 +23,15 @@ public class FormNotaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_nota);
+
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_NOTA)) {
+            Nota notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
+            TextView titulo = findViewById(R.id.formNota_EditTxt_Titulo);
+            titulo.setText(notaRecebida.getTitulo());
+            TextView descricao = findViewById(R.id.formNota_EditTxt_Descricao);
+            descricao.setText(notaRecebida.getDescricao());
+        }
     }
 
     @Override
