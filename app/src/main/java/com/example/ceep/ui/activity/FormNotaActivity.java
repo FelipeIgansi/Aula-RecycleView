@@ -1,12 +1,14 @@
 package com.example.ceep.ui.activity;
 
 import static com.example.ceep.ui.activity.ConstantesCompartilhadas.CHAVE_NOTA;
-import static com.example.ceep.ui.activity.ConstantesCompartilhadas.CODIGO_RESULTADO_NOTA_CIRADA;
+import static com.example.ceep.ui.activity.ConstantesCompartilhadas.CHAVE_POSICAO;
+import static com.example.ceep.ui.activity.ConstantesCompartilhadas.POSICAO_INVALIDA;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +17,7 @@ import com.example.ceep.dao.NotaDAO;
 import com.example.ceep.model.Nota;
 
 public class FormNotaActivity extends AppCompatActivity {
-    public static final int POSICAO_INVALIDA = -1;
-    public static final String CHAVE_POSICAO = "posicao";
+
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
@@ -72,7 +73,7 @@ public class FormNotaActivity extends AppCompatActivity {
         Intent resultadoInsercao = new Intent();
         resultadoInsercao.putExtra(CHAVE_NOTA, nota);
         resultadoInsercao.putExtra(CHAVE_POSICAO, posicaoRecebida);
-        setResult(CODIGO_RESULTADO_NOTA_CIRADA, resultadoInsercao);
+        setResult(Activity.RESULT_OK, resultadoInsercao);
     }
 
     @NonNull
