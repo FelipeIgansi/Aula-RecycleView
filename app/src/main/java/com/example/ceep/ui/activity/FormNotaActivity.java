@@ -18,6 +18,8 @@ import com.example.ceep.model.Nota;
 
 public class FormNotaActivity extends AppCompatActivity {
 
+    public static final String TITULO_APPBAR_INSERE = "Insere nota";
+    public static final String TITULO_APPBAR_ALTERA = "Altera nota";
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
@@ -27,10 +29,13 @@ public class FormNotaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_nota);
 
+        setTitle(TITULO_APPBAR_INSERE);
+
         inicializaCampos();
 
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)) {
+            setTitle(TITULO_APPBAR_ALTERA);
             Nota notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
 
             posicaoRecebida = dadosRecebidos.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);

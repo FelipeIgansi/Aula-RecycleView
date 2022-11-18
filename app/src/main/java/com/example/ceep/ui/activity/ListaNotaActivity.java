@@ -27,6 +27,7 @@ import java.util.List;
 
 public class ListaNotaActivity extends AppCompatActivity {
 
+    public static final String TITULO_APPBAR = "Notas";
     private ListaNotasAdapter adapter;
 
     @Override
@@ -35,6 +36,8 @@ public class ListaNotaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_notas);
         List<Nota> todasNotas = pegaTodasNotas();
         configuraRecyclerView(todasNotas);
+
+        setTitle(TITULO_APPBAR);
 
         configuraInputInsereNotas();
 
@@ -58,9 +61,6 @@ public class ListaNotaActivity extends AppCompatActivity {
 
     private List<Nota> pegaTodasNotas() {
         NotaDAO notaDao = new NotaDAO();
-        for (int i = 0; i < 10; i++) {
-            notaDao.insere(new Nota("Titulo " +(i+1), "Descriçao " +(i+1)));
-        }
         return notaDao.todos();
     }
 
@@ -120,7 +120,7 @@ public class ListaNotaActivity extends AppCompatActivity {
     }
 
     private boolean temNota(@Nullable Intent data) {
-        return data.hasExtra(CHAVE_NOTA);
+        return data != null && data.hasExtra(CHAVE_NOTA);
     }
 
     private boolean validaResultado(int resultCode) {
