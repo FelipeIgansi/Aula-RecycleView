@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ceep.dao.NotaDAO;
 import com.example.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
+@SuppressWarnings("deprecation")
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private ListaNotasAdapter adapter;
@@ -27,14 +28,22 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         int idInicial = viewHolder.getAdapterPosition();
         int idFinal = target.getAdapterPosition();
+        trocaNotas(idInicial, idFinal);
+        return true;
+    }
+
+    private void trocaNotas(int idInicial, int idFinal) {
         new NotaDAO().troca(idInicial, idFinal);
         adapter.troca(idInicial, idFinal);
-        return true;
     }
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        @SuppressWarnings("deprecation") int id = viewHolder.getAdapterPosition();
+        int id = viewHolder.getAdapterPosition();
+        removeNota(id);
+    }
+
+    private void removeNota(int id) {
         new NotaDAO().remove(id);
         adapter.remove(id);
     }
